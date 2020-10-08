@@ -16,8 +16,8 @@ class User {
     @Column()
     password: string;
 
-    @Column(type => Profile)
-    profile: Profile;
+    @Column()
+    profileId: string;
 }
 
 export default User;

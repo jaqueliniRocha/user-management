@@ -1,5 +1,4 @@
-import { getCustomRepository } from 'typeorm';
-
+import { getCustomRepository, UpdateResult } from 'typeorm';
 import User from '../models/User';
 import UserRepository from '../repositories/UserRepository';
 import ProfileRepository from '../repositories/ProfileRepository';
@@ -11,29 +10,33 @@ interface UserRequest {
     profileName: string
 }
 
-class CreateUserService {
+class UpdateUserService {
 
-    public async execute({name, email, password, profileName}: UserRequest): Promise<User> {
+    public async execute(id: string, {name, email, password, profileName}: UserRequest): Promise<User> {
         const userRepository = getCustomRepository(UserRepository);
         const profileRepository = getCustomRepository(ProfileRepository);
+
         const profile = await profileRepository.findByName(profileName);
         
         if(profile == null){
             throw Error('Profile name not found');
         }
 
-        const user = userRepository.create({
+        const oldUser = await userRepository.findOne(id);
+
+        if(oldUser == null){
+            throw Error('User not found');
+        }
+
+        return await userRepository.save({
+            id,
             name, 
             email, 
             password, 
             profileId: profile.id
         });
-
-        await userRepository.save(user);
-
-        return user;
     }
 
 }
 
-export default CreateUserService;
+export default UpdateUserService;
