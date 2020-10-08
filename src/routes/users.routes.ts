@@ -5,6 +5,7 @@ import { getCustomRepository } from 'typeorm';
 
 import UserRepository from '../repositories/UserRepository';
 import CreateUserService from '../services/CreateUserService'
+import DeleteUserService from '../services/DeleteUserService'
 
 const usersRouter = Router();
 
@@ -29,10 +30,14 @@ usersRouter.get('/', async (request, response) => {
 })
 
 usersRouter.delete('/:id', async (request, response) => {
-    const { id } = request.params;
-    const userRepository = getCustomRepository(UserRepository);
-    const user = await userRepository.delete({id: id});
-    return response.status(204);
+    try {
+        const { id } = request.params;
+        const deleteUserService = new DeleteUserService();
+        const user = await deleteUserService.execute(id);
+        return response.status(204).send();
+    } catch (err) {
+        response.status(400).json( { error: err.message } );
+    }
 })
 
 export default usersRouter;
