@@ -1,29 +1,35 @@
+import { getCustomRepository } from 'typeorm';
+import Profile from '../models/Profile';
+
 import User from '../models/User';
 import UserRepository from '../repositories/UserRepository';
+import ProfileRepository from '../repositories/ProfileRepository';
 
 interface UserRequest {
     name: string, 
     email: string, 
     password: string, 
-    profiles: string[]
+    profile: string
 }
 
 class CreateUserService {
 
-    private userRepository: UserRepository;
-
-    constructor(userRepository: UserRepository){
-        this.userRepository = userRepository;
-    }
-
-    public execute({name, email, password, profiles}: UserRequest): User {
-        if(password == null){
-            throw Error('Password is null');
+    public async execute({name, email, password, profile}: UserRequest): Promise<User> {
+        const userRepository = getCustomRepository(UserRepository);
+        const profileRepository = getCustomRepository(ProfileRepository);
+        
+        if(await profileRepository.findByName(profile) == null){
+            throw Error('Profile name not found');
         }
 
-        const user = this.userRepository.create({
-            name, email, password, profiles
+        const user = userRepository.create({
+            name, 
+            email, 
+            password, 
+            profile: new Profile(profile)
         });
+
+        await userRepository.save(user);
 
         return user;
     }

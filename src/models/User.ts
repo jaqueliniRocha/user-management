@@ -1,23 +1,23 @@
-import { uuid } from 'uuidv4';
+import {Entity, ObjectID, ObjectIdColumn, Column} from "typeorm";
+import Profile from "./Profile";
 
+@Entity('users')
 class User {
+
+    @ObjectIdColumn()
     id: string; 
 
+    @Column()
     name: string;
 
+    @Column()
     email: string;
 
+    @Column()
     password: string;
 
-    profiles: string[]
-
-    constructor({name, email, password, profiles} : Omit<User, 'id'>) {
-        this.id = uuid();
-        this.name = name;
-        this.password = password;
-        this.email = email;
-        this.profiles = profiles;
-    }
+    @Column(type => Profile)
+    profile: Profile;
 }
 
 export default User;
