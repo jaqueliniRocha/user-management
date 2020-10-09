@@ -7,8 +7,11 @@ import ProfileRepository from '../repositories/ProfileRepository';
 import CreateProfileService from '../services/CreateProfileService'
 import DeleteProfileService from '../services/DeleteProfileService'
 import UpdateProfileService from '../services/UpdateProfileService';
+import ensureAuthenticated from '../middlewares/ensureAuthenticated'
 
 const profilesRouter = Router();
+
+profilesRouter.use(ensureAuthenticated);
 
 profilesRouter.post('/', async (request, response) => {
     try {

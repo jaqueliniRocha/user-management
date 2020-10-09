@@ -3,16 +3,16 @@ import UserRepository from '../repositories/UserRepository';
 
 class DeleteUserService {
 
-    public async execute(id: string): Promise<DeleteResult> {
+    public async execute(id: string): Promise<void> {
         const userRepository = getCustomRepository(UserRepository);
 
         const user = await userRepository.findOne(id);
 
-        if(user == null){
+        if(!user){
             throw Error('User not found');
         }
 
-        return await userRepository.delete(id);
+        await userRepository.delete(id);
     }
 
 }

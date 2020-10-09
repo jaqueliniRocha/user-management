@@ -3,10 +3,10 @@ import ProfileRepository from '../repositories/ProfileRepository';
 
 class DeleteProfileService {
 
-    public async execute(name: string): Promise<DeleteResult> {
+    public async execute(name: string): Promise<void> {
         const profileRepository = getCustomRepository(ProfileRepository);
         
-        if(name == null){
+        if(!name){
             throw Error('name is null');
         }
 
@@ -16,7 +16,7 @@ class DeleteProfileService {
             throw Error('Profile not found');
         }
 
-        return await profileRepository.delete({name: name});
+        await profileRepository.delete({name: name});
     }
 
 }

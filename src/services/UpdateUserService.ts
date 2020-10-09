@@ -24,7 +24,7 @@ class UpdateUserService {
 
         const oldUser = await userRepository.findOne(id);
 
-        if(oldUser == null){
+        if(!oldUser){
             throw Error('User not found');
         }
 

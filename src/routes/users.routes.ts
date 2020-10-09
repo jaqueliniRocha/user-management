@@ -8,7 +8,11 @@ import CreateUserService from '../services/CreateUserService'
 import DeleteUserService from '../services/DeleteUserService'
 import UpdateUserService from '../services/UpdateUserService';
 
+import ensureAuthenticated from '../middlewares/ensureAuthenticated'
+
 const usersRouter = Router();
+
+usersRouter.use(ensureAuthenticated);
 
 usersRouter.post('/', async (request, response) => {
     try {

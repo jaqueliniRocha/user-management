@@ -8,7 +8,7 @@ class CreateProfileService {
     public async execute(name: string): Promise<Profile> {
         const profileRepository = getCustomRepository(ProfileRepository);
         
-        if(name == null){
+        if(!name){
             throw Error('name is null');
         }
 
