@@ -1,6 +1,19 @@
 # user-management
 
-Postman Collection
+Este microserviço é responsável pela gestão de usuários e seus perfis. Perfis podem ser cadastrados, alterados, removidos e consultados. O mesmo pode ser feito com usuários, que possuem um perfil cada.
+
+Para tais alterações é necessário estar logado no sistema usando um token jwt gerado a partir do endpoint `@POST sessions` com o json abaixo:
+
+```
+{
+    "email": "email@email.com",
+    "password": "senha"
+}
+``` 
+
+Onde email e password devem estar cadastrados no BD.
+
+##Postman Collection##
 
 ```
 {
